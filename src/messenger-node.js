@@ -10,6 +10,8 @@ const CLI_ICON_PASS = '✓';
 const CLI_ICON_WARN = '♺ ';
 const CLI_ICON_NOTE = '✏︎ ';
 
+const VALID_COLOR = /^[a-zA-Z]+$/;
+
 const messenger = {
   version: () => {
     return pkgInfo.version;
@@ -68,7 +70,10 @@ const messenger = {
   line: color => {
     if (color.length > 0) {
       try {
-        eval(`cl.${color}()`); // eslint-disable-line
+        if(VALID_COLOR.test(color))
+          eval(`cl.${color}()`); // eslint-disable-line
+        else
+          console.error(chalk.bgRed,bold(`Invalid Color: ${color}`));
       }
       catch (e) {
         console.error(chalk.bgRed.bold(`Invalid Color: ${color}`));
